@@ -1,0 +1,27 @@
+#!/usr/bin/php
+<?php
+
+if (php_sapi_name() !== 'cli') {
+    exit;
+}
+
+require __DIR__ . '/vendor/autoload.php';
+
+use App\Service\GithubService;
+use Minicli\App;
+
+$app = new App([
+    'app_path' => __DIR__ . '/app/Command',
+]);
+
+$app->setSignature(<<<EOL
+   ___                 _ _    ___      _             _          
+  / __|___ _ __  _ __ (_) |_ / __|__ _| |___ _ _  __| |__ _ _ _ 
+ | (__/ _ \ '  \| '  \| |  _| (__/ _` | / -_) ' \/ _` / _` | '_|
+  \___\___/_|_|_|_|_|_|_|\__|\___\__,_|_\___|_||_\__,_\__,_|_|    
+                                          ./commit-calendar help                                                           
+EOL);
+
+$app->addService('github', new GithubService());
+
+$app->runCommand($argv);
